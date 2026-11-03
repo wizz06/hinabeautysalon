@@ -1,0 +1,459 @@
+<title>Hina Beauty Salon</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@300..600&display=swap" rel="stylesheet">
+<style>
+/* Layout: flat 2D salon site. Utility bar, sticky nav, split hero with framed logo, filterable service cards,
+   plum bridal band with planning tips, booking steps, FAQ, Google rating panel, contact, footer, mobile call bar. */
+:root{
+  --bg:#fffaf8;
+  --bg-2:#fbeee9;
+  --ink:#2b1226;
+  --muted:#6b5262;
+  --plum:#2b1226;
+  --magenta:#b82368;
+  --magenta-hi:#9d1c58;
+  --rose:#d99a8c;
+  --on-plum:#f7e9e4;
+  --on-plum-muted:#d3bcc6;
+  --line:rgba(43,18,38,.12);
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--magenta);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:clamp(2rem,4.4vw,3.1rem)}
+h2 em,h1 em{font-style:italic;color:var(--magenta)}
+.eyebrow{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);font-weight:500;margin:0 0 14px}
+.sec-head{max-width:36em;margin-bottom:40px}
+.sec-head p{color:var(--muted);margin:14px 0 0}
+section{padding-block:clamp(60px,8vw,100px)}
+
+.util{background:var(--plum);color:var(--on-plum);font-size:.86rem}
+.util .wrap{display:flex;justify-content:space-between;gap:16px;padding-block:9px;flex-wrap:wrap}
+.util span{color:var(--on-plum-muted)}
+.util a{text-decoration:none;font-weight:500;color:var(--on-plum)}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,250,248,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.badge{width:48px;height:48px;border-radius:50%;background:#fff;padding:2px;flex:none;box-shadow:0 0 0 1.5px var(--rose)}
+.badge img{width:100%;height:100%;display:block;border-radius:50%}
+.brand b{font-family:var(--display);font-weight:600;font-size:1.2rem;white-space:nowrap}
+nav{display:flex;align-items:center;gap:28px}
+nav a.l{text-decoration:none;font-size:.95rem;font-weight:500;color:var(--muted);transition:color .2s}
+nav a.l:hover{color:var(--magenta)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:999px;padding:14px 28px;font:500 .98rem/1 var(--body);text-decoration:none;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:transform .2s,background .2s,color .2s}
+.btn.solid{background:var(--magenta);color:#fff}
+.btn.solid:hover{background:var(--magenta-hi);transform:translateY(-2px)}
+.btn.ghost{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn.ghost:hover{background:var(--ink);color:var(--bg);transform:translateY(-2px)}
+.btn.light{background:#fff;color:var(--plum)}
+.btn.light:hover{background:var(--bg-2);transform:translateY(-2px)}
+.btn.sm{padding:11px 22px;font-size:.9rem}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--bg),var(--bg-2));overflow:hidden;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,72px);align-items:center;padding-block:clamp(48px,7vw,96px)}
+.hero h1{font-size:clamp(2.9rem,6.4vw,5.2rem);letter-spacing:-.015em}
+.hero .tag{font-size:clamp(1.1rem,2vw,1.3rem);color:var(--muted);margin:22px 0 30px;max-width:28em}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.mini{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:.92rem;color:var(--muted)}
+.mini b{color:var(--ink);font-weight:500}
+.art{position:relative;aspect-ratio:1;width:min(100%,460px);margin-inline:auto}
+.art::before,.art::after{content:"";position:absolute;border-radius:50%}
+.art::before{inset:0;border:1.5px dashed rgba(184,35,104,.35)}
+.art::after{inset:9%;background:#f7d9d3}
+.art .logo{position:absolute;inset:17%;border-radius:50%;background:#fff;padding:6px;box-shadow:0 0 0 4px var(--rose),0 24px 60px rgba(184,35,104,.22);z-index:2}
+.art .logo img{width:100%;height:100%;border-radius:50%;display:block}
+.chip{position:absolute;z-index:3;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 16px;box-shadow:0 12px 30px rgba(43,18,38,.1);font-size:.85rem;line-height:1.3;color:var(--muted)}
+.chip b{display:block;font-family:var(--display);font-size:1.15rem;color:var(--ink);font-weight:600}
+.chip.a{left:-2%;top:12%}
+.chip.b{right:-2%;bottom:14%}
+.star{color:var(--magenta)}
+
+.strip{background:#fff;border-block:1px solid var(--line)}
+.strip ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
+.strip li{padding:22px 20px;border-left:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.strip li:first-child{border-left:0;padding-left:0}
+.strip strong{font-family:var(--display);font-size:1.4rem;font-weight:600}
+.strip span{font-size:.88rem;color:var(--muted)}
+
+/* about */
+.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.about p{color:var(--muted);margin:18px 0 0}
+.feats{display:grid;gap:0}
+.feat{display:grid;grid-template-columns:54px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
+.feat:last-child{border-bottom:1px solid var(--line)}
+.feat h3{font-size:1.3rem;margin-bottom:4px}
+.feat p{margin:0;font-size:.95rem}
+.ico{width:54px;height:54px;border-radius:14px;background:var(--bg-2);color:var(--magenta);display:grid;place-items:center}
+.ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* services */
+.services{background:var(--bg-2)}
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.tab{border:1.5px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:10px 20px;font:500 .92rem var(--body);cursor:pointer;transition:all .2s}
+.tab:hover{border-color:var(--magenta);color:var(--magenta)}
+.tab[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 26px 24px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .25s,border-color .25s,transform .25s}
+.card:hover{box-shadow:0 18px 40px rgba(43,18,38,.1);border-color:rgba(184,35,104,.35);transform:translateY(-3px)}
+.card[hidden]{display:none}
+.card .ico{width:46px;height:46px;border-radius:12px}
+.card .ico svg{width:22px;height:22px}
+.card h3{font-size:1.4rem}
+.card p{margin:0;color:var(--muted);font-size:.96rem}
+.pill{align-self:flex-start;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;background:var(--bg-2);color:var(--magenta);border-radius:999px;padding:3px 10px;font-weight:500;margin-top:auto}
+.card.wide{grid-column:span 2;background:var(--plum);border-color:var(--plum);color:var(--on-plum)}
+.card.wide p{color:var(--on-plum-muted)}
+.card.wide .ico{background:rgba(255,255,255,.1);color:var(--rose)}
+.card.wide .btn{align-self:flex-start;margin-top:6px}
+.card.wide:hover{transform:none;box-shadow:none}
+
+/* bridal */
+.bridal{background:var(--plum);color:var(--on-plum)}
+.bridal .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.bridal .eyebrow{color:var(--rose)}
+.bridal h2 em{color:var(--rose)}
+.bridal p{color:var(--on-plum-muted);max-width:30em;margin:20px 0 28px}
+.panel{border:1px solid rgba(217,154,140,.35);border-radius:20px;padding:30px 28px;background:rgba(255,255,255,.04)}
+.panel h3{font-size:1.5rem;margin-bottom:6px}
+.panel>p{margin:0 0 18px;font-size:.95rem}
+.panel ul{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.panel li{padding:13px 0 13px 34px;border-top:1px solid rgba(217,154,140,.2);position:relative;color:var(--on-plum)}
+.panel li::before{content:"";position:absolute;left:4px;top:1.15em;width:12px;height:7px;border-left:2px solid var(--rose);border-bottom:2px solid var(--rose);transform:rotate(-45deg)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0;list-style:none}
+.tags li{border:1px solid rgba(217,154,140,.5);border-radius:999px;padding:6px 14px;font-size:.88rem;color:var(--on-plum)}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:s}
+.steps li{counter-increment:s;border-top:2px solid var(--ink);padding-top:20px;display:flex;flex-direction:column;gap:8px}
+.steps li::before{content:"Step " counter(s);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--magenta);font-weight:500}
+.steps h3{font-size:1.5rem}
+.steps p{margin:0;color:var(--muted)}
+
+/* faq + rating */
+.qa{background:var(--bg-2)}
+.qa .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,5vw,72px);align-items:start}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:20px 40px 20px 0;font-family:var(--display);font-size:1.25rem;font-weight:500;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);font:400 1.6rem var(--body);color:var(--magenta)}
+details[open] summary::after{content:"\2212"}
+details p{margin:0 0 20px;color:var(--muted);max-width:34em}
+.rating{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px 30px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 50px rgba(43,18,38,.07)}
+.rating .big{font-family:var(--display);font-size:4.4rem;line-height:1;font-weight:500}
+.stars{color:var(--magenta);letter-spacing:.15em;font-size:1.2rem}
+.rating p{margin:0;color:var(--muted)}
+
+/* visit */
+.visit .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,72px);align-items:start}
+dl{margin:32px 0 0}
+dl>div{display:grid;grid-template-columns:100px 1fr auto;gap:14px;align-items:start;padding:18px 0;border-top:1px solid var(--line)}
+dl>div:last-child{border-bottom:1px solid var(--line)}
+dt{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);font-weight:500;padding-top:4px}
+dd{margin:0;min-width:0;overflow-wrap:anywhere}
+dd .num{font-family:var(--display);font-size:1.6rem;font-weight:500}
+.copy{background:#fff;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:6px 14px;font:500 .8rem var(--body);cursor:pointer;transition:border-color .2s,color .2s}
+.copy:hover{border-color:var(--magenta);color:var(--magenta)}
+.findus{background:var(--bg-2);border-radius:22px;padding:34px 30px;display:flex;flex-direction:column;gap:16px}
+.findus .badge{width:84px;height:84px;padding:3px}
+.findus h3{font-size:1.8rem}
+.findus p{margin:0;color:var(--muted)}
+
+footer{background:var(--plum);color:var(--on-plum-muted);padding-block:36px;font-size:.92rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
+footer .brand b{color:var(--on-plum)}
+footer a{text-decoration:none}
+footer a:hover{color:#fff}
+footer .links{display:flex;gap:22px;flex-wrap:wrap}
+
+.callbar{display:none}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-weight:500;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;z-index:70}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:960px){.grid{grid-template-columns:1fr 1fr}.card.wide{grid-column:span 2}}
+@media (max-width:880px){
+  nav a.l{display:none}
+  .util .addr{display:none}
+  .hero .wrap,.about .wrap,.bridal .wrap,.qa .wrap,.visit .wrap{grid-template-columns:1fr}
+  .art{width:min(100%,340px)}
+  .strip ul{grid-template-columns:1fr 1fr}
+  .strip li:nth-child(odd){border-left:0;padding-left:0}
+  .strip li:nth-child(n+3){border-top:1px solid var(--line)}
+  .steps{grid-template-columns:1fr}
+  body{padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  .callbar{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:55;background:rgba(255,250,248,.96);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .callbar .btn{flex:1}
+}
+@media (max-width:620px){.grid{grid-template-columns:1fr}.card.wide{grid-column:auto}}
+@media (max-width:520px){
+  .brand b{font-size:1.02rem}
+  .long{display:none}
+  .chip.a{left:0}.chip.b{right:0}
+  dl>div{grid-template-columns:1fr auto}
+  dt{grid-column:1/-1;padding-top:0}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.btn{transition:none}}
+</style>
+
+<div class="util">
+  <div class="wrap">
+    <span class="addr">A-444, 4th Floor, Sumel-8, Ajeet Mill Cross Road, Rakhial, Ahmedabad</span>
+    <span>Opens 11 AM &middot; <a href="tel:+917016957130">070169 57130</a></span>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Hina Beauty Salon, home">
+      <span class="badge"><img src="data:image/png;base64,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" alt="Hina Beauty Salon logo" width="48" height="48"></span>
+      <b>Hina Beauty Salon</b>
+    </a>
+    <nav>
+      <a class="l" href="#about">About</a>
+      <a class="l" href="#services">Services</a>
+      <a class="l" href="#bridal">Bridal</a>
+      <a class="l" href="#faq">FAQ</a>
+      <a class="l" href="#visit">Contact</a>
+      <a class="btn solid sm" href="tel:+917016957130">Call<span class="long">&nbsp;now</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Ladies' beauty parlour &middot; Rakhial, Ahmedabad</p>
+        <h1>Hina <em>Beauty</em> Salon</h1>
+        <p class="tag">Hair, skin, nails, makeup and bridal grooming, all in one place and made for ladies.</p>
+        <div class="cta">
+          <a class="btn solid" href="tel:+917016957130">Call 070169 57130</a>
+          <a class="btn ghost" href="#services">View services</a>
+        </div>
+        <div class="mini">
+          <span><b>4th floor,</b> Sumel-8, Ajeet Mill</span>
+          <span><b>Opens</b> 11 AM</span>
+        </div>
+      </div>
+      <div class="art">
+        <div class="logo"><img src="data:image/png;base64,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" alt="Hina Beauty Salon logo"></div>
+        <div class="chip a"><b><span class="star">&#9733;</span> 4.5</b>Google rating</div>
+        <div class="chip b"><b>Bridal</b>Special grooming services</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="wrap">
+      <ul>
+        <li><strong>Hair &amp; skin</strong><span>Spa, facials, waxing and more</span></li>
+        <li><strong>Hydra facial</strong><span>Special treatment</span></li>
+        <li><strong>Bridal grooming</strong><span>Planned around your day</span></li>
+        <li><strong>Packages</strong><span>Combine services and save time</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">About us</p>
+        <h2>A ladies' salon in <em>Rakhial</em></h2>
+        <p>Hina Beauty Salon is a beauty parlour in Rakhial, Ahmedabad, serving ladies with hair, skin, nail and makeup services. From everyday haircuts and facials to hydra facial treatments, chemical hair processes and bridal grooming, you can find what you need in one place.</p>
+        <p>Not sure which service suits you? Call us and we will help you choose.</p>
+      </div>
+      <div class="feats">
+        <div class="feat">
+          <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>
+          <div><h3>Made for ladies</h3><p>Our services are designed especially for our lady customers.</p></div>
+        </div>
+        <div class="feat">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18"/></svg></span>
+          <div><h3>Bridal grooming</h3><p>Special services for brides, from makeup to hair and skin.</p></div>
+        </div>
+        <div class="feat">
+          <span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-3 0-4-4-1-4s1 4 1 4zm0 0c3 0 4-4 1-4s-1 4-1 4z"/></svg></span>
+          <div><h3>Packages</h3><p>Ask about packages that bring several services together.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Our services</p>
+        <h2>Everything you need, <em>under one roof</em></h2>
+        <p>Choose a category to see what we offer.</p>
+      </div>
+      <div class="tabs" role="group" aria-label="Filter services">
+        <button class="tab" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="tab" type="button" data-f="hair" aria-pressed="false">Hair</button>
+        <button class="tab" type="button" data-f="skin" aria-pressed="false">Skin</button>
+        <button class="tab" type="button" data-f="hands" aria-pressed="false">Hands &amp; feet</button>
+        <button class="tab" type="button" data-f="makeup" aria-pressed="false">Makeup &amp; bridal</button>
+      </div>
+      <div class="grid" id="grid">
+        <article class="card" data-c="hair"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 20 18M8.5 16.5 20 6"/></svg></span><h3>Hair cut</h3><p>A fresh cut shaped to suit your face and the way you wear your hair.</p></article>
+        <article class="card" data-c="hair"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 20 18M8.5 16.5 20 6"/></svg></span><h3>Hair styling</h3><p>Styling for everyday looks, parties and special occasions.</p></article>
+        <article class="card" data-c="hair"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 20 18M8.5 16.5 20 6"/></svg></span><h3>Hair spa</h3><p>A nourishing treatment for the hair and scalp that leaves hair soft and refreshed.</p></article>
+        <article class="card" data-c="hair"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 20 18M8.5 16.5 20 6"/></svg></span><h3>Permanent hair straightening</h3><p>Long-lasting straight, smooth hair. Call us to ask if it suits your hair type.</p></article>
+        <article class="card" data-c="hair"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 20 18M8.5 16.5 20 6"/></svg></span><h3>Chemical hair processes</h3><p>All types of chemical hair services, done with care.</p></article>
+        <article class="card" data-c="skin"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><h3>Facial</h3><p>Deep cleansing and care to bring back a fresh, even-looking glow.</p></article>
+        <article class="card" data-c="skin"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><h3>Hydra facial</h3><p>Our special skin treatment for a clean, hydrated, refreshed face.</p><span class="pill">Special treatment</span></article>
+        <article class="card" data-c="skin"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><h3>Waxing</h3><p>Smooth, clean waxing for a tidy finish.</p></article>
+        <article class="card" data-c="skin"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><h3>Eyebrow</h3><p>Neat, well-shaped brows that frame your face.</p></article>
+        <article class="card" data-c="hands"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span><h3>Manicure</h3><p>Hand and nail care for clean, polished hands.</p></article>
+        <article class="card" data-c="hands"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span><h3>Pedicure</h3><p>Foot and nail care that leaves your feet soft and fresh.</p></article>
+        <article class="card" data-c="makeup"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 21v-6h6v6zM10 15V9l2-5 2 5v6"/></svg></span><h3>Makeup</h3><p>All types of makeup, from light day looks to full party glam.</p></article>
+        <article class="card" data-c="makeup"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18"/></svg></span><h3>Bridal grooming</h3><p>Special services for the bride. See the bridal section below.</p><span class="pill">Special service</span></article>
+        <article class="card wide" data-c="all"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-3 0-4-4-1-4s1 4 1 4zm0 0c3 0 4-4 1-4s-1 4-1 4z"/></svg></span><h3>Packages</h3><p>We put together packages that combine hair, skin and makeup services. Call us to find the one that suits you.</p><a class="btn light sm" href="tel:+917016957130">Call 070169 57130</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bridal" id="bridal">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Bridal grooming</p>
+        <h2>Look your best on <em>your big day</em></h2>
+        <p>We offer special bridal grooming services. Tell us your date and what you need, and we will plan your hair, skin and makeup with you.</p>
+        <ul class="tags">
+          <li>Bridal makeup</li><li>Hair styling</li><li>Hydra facial</li><li>Hair spa</li><li>Manicure</li><li>Pedicure</li><li>Waxing</li><li>Eyebrow</li>
+        </ul>
+        <a class="btn light" href="tel:+917016957130">Plan your bridal look</a>
+      </div>
+      <div class="panel">
+        <h3>Helpful to share when you call</h3>
+        <p>A few details help us plan better with you.</p>
+        <ul>
+          <li>Your wedding or event date</li>
+          <li>Your outfit and jewellery style</li>
+          <li>Any skin or hair concerns</li>
+          <li>How many people need services</li>
+          <li>The services or package you have in mind</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Booking</p>
+        <h2>Book in <em>three steps</em></h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Call us</h3><p>Ring 070169 57130 and tell us the service you want.</p></li>
+        <li><h3>Choose your time</h3><p>We will confirm the timing and any package that fits.</p></li>
+        <li><h3>Visit the salon</h3><p>Come to the 4th floor at Sumel-8, Ajeet Mill Cross Road, Rakhial.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="qa" id="faq">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Questions</p>
+        <h2 style="margin-bottom:28px">Good to <em>know</em></h2>
+        <details open><summary>How do I book an appointment?</summary><p>Call us on 070169 57130. Tell us the service you would like and we will confirm the timing with you.</p></details>
+        <details><summary>Do you offer bridal services?</summary><p>Yes. We provide special bridal grooming services. Call us with your date and what you need, and we will plan it with you.</p></details>
+        <details><summary>Is the salon only for ladies?</summary><p>Our services are made especially for our lady customers.</p></details>
+        <details><summary>Do you have packages?</summary><p>Yes. We have packages that combine services. Call us to hear which one suits you.</p></details>
+        <details><summary>Which hair treatments do you offer?</summary><p>Hair cut, hair styling, hair spa, permanent hair straightening and all types of chemical hair processes.</p></details>
+        <details><summary>What are your opening hours?</summary><p>We open at 11 AM. Please call to confirm today's timings before you visit.</p></details>
+        <details><summary>Where are you located?</summary><p>Block A-444, 4th Floor, Sumel-8, Ajeet Mill Cross Road, Rakhial, Ahmedabad, Gujarat 380023.</p></details>
+      </div>
+      <aside class="rating">
+        <p class="eyebrow" style="margin:0">On Google</p>
+        <div class="big">4.5</div>
+        <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>Based on 4 Google reviews. Visited us? Share your experience to help other ladies find us.</p>
+        <a class="btn solid" href="https://www.google.com/search?q=hina+beauty+salon" target="_blank" rel="noopener">See Google reviews</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2>Visit <em>Hina Beauty Salon</em></h2>
+        <dl>
+          <div>
+            <dt>Address</dt>
+            <dd id="addr">Block A-444, 4th Floor, Sumel-8, Ajeet Mill Cross Road, Rakhial, Ahmedabad, Gujarat 380023</dd>
+            <dd><button class="copy" type="button" data-copy="#addr">Copy</button></dd>
+          </div>
+          <div>
+            <dt>Phone</dt>
+            <dd><span class="num" id="phone">070169 57130</span></dd>
+            <dd><button class="copy" type="button" data-copy="#phone">Copy</button></dd>
+          </div>
+          <div>
+            <dt>Hours</dt>
+            <dd>Opens at 11 AM. Please call to confirm today's timings.</dd>
+            <dd></dd>
+          </div>
+        </dl>
+      </div>
+      <aside class="findus">
+        <span class="badge"><img src="data:image/png;base64,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" alt="" width="84" height="84"></span>
+        <h3>We look forward to meeting you</h3>
+        <p>Open directions in Google Maps, or call us before you come.</p>
+        <div class="cta">
+          <a class="btn solid" href="https://www.google.com/maps/search/?api=1&query=Hina+Beauty+Salon+Sumel-8+Ajeet+Mill+Rakhial+Ahmedabad" target="_blank" rel="noopener">Get directions</a>
+          <a class="btn ghost" href="tel:+917016957130">Call now</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="badge"><img src="data:image/png;base64,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" alt="" width="48" height="48"></span><b>Hina Beauty Salon</b></a>
+    <div class="links"><a href="#about">About</a><a href="#services">Services</a><a href="#bridal">Bridal</a><a href="#faq">FAQ</a><a href="#visit">Contact</a></div>
+    <span>Rakhial, Ahmedabad, Gujarat 380023</span>
+  </div>
+</footer>
+
+<div class="callbar">
+  <a class="btn solid" href="tel:+917016957130">Call 070169 57130</a>
+  <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Hina+Beauty+Salon+Sumel-8+Ajeet+Mill+Rakhial+Ahmedabad" target="_blank" rel="noopener">Directions</a>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+<script>
+(function(){
+  var toast=document.getElementById('toast'),tt;
+  function say(m){toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('on')},1600)}
+  function fallback(t){var a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();say(ok?'Copied':'Select the text and copy it')}
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=document.querySelector(b.getAttribute('data-copy')).textContent.trim();
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){say('Copied')},function(){fallback(t)})}else fallback(t);
+    });
+  });
+  var tabs=document.querySelectorAll('.tab'),cards=document.querySelectorAll('#grid .card');
+  tabs.forEach(function(tb){
+    tb.addEventListener('click',function(){
+      var f=tb.getAttribute('data-f');
+      tabs.forEach(function(x){x.setAttribute('aria-pressed',x===tb?'true':'false')});
+      cards.forEach(function(c){var k=c.getAttribute('data-c');c.hidden=!(f==='all'||k===f)});
+    });
+  });
+})();
+</script>
